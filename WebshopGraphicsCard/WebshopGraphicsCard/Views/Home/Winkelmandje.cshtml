@@ -1,0 +1,71 @@
+﻿@model  WebshopGraphicsCard.Models.VMWinkelmand
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <title>Winkelmandje</title>
+</head>
+<body class="m-3">
+    
+           <h2 class="Centreer"> ONLINE VIDEOKAARTEN - Winkelmandje</h2>
+           <p class="Centreer">-------------</p>
+           <br />
+           <table class="table">
+               <tr>
+                   <td>Klantnumer: </td>
+                   <td>@Model.Klant.KlantNr</td>
+               </tr>
+               <tr>
+                   <td>Naam:</td>
+                   <td>@Model.Klant.Voornaam @Model.Klant.Naam </td>
+               </tr>
+               <tr>
+                   <td>Adres:</td>
+                   <td>@Model.Klant.Adres</td>
+               </tr>
+               <tr>
+                   <td></td>
+                   <td>@Model.Klant.Gemeente</td>
+               </tr>
+               <tr>
+                   <td></td>
+                   <td></td>
+               </tr>
+               <tr>
+                   <td>Besteldatum:</td>
+                   <td>@DateTime.Now.ToLongDateString()</td>
+               </tr>
+           </table>
+
+           <table>
+               <tr class="opmaakBalk">
+                   <td></td>
+                   <td>Foto</td>
+                   <td>ArtNr</td>
+                   <td>Naam</td>
+                   <td>Aantal</td>
+                   <td>Prijs</td>
+                   <td>Totaal</td>
+               </tr>
+
+               @foreach (var item in Model.WinkelmandRepo.WinkelmandItems)
+               {
+                <tr>
+                   <td></td>
+                   <td><img class="OpmaakFoto" src="@Url.Content("~/images/" + item.Foto)"></td>
+                   <td>@item.ArtNr</td>
+                   <td>@item.Naam</td>
+                   <td>@item.Aantal</td>
+                   <td>@string.Format("{0:c}",item.Prijs) </td>
+                   <td></td>
+                </tr>
+               }
+           </table>
+            
+
+</body>
+</html>

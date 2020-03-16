@@ -1,0 +1,53 @@
+﻿@model WebshopGraphicsCard.Models.VMToevoegen
+
+<!DOCTYPE html>
+
+<html class="Div">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <title>Toevoegen</title>
+</head>
+<body class="m-3, Centreer">
+    <form asp-action="Toevoegen" asp-controller="Home">
+        <h2>ONLINE VIDEOKAARTEN - Item toevoegen aan winkelmandje</h2>
+        <table class="table">
+            <tr>
+                <td rowspan="5">
+                    <img class="OpmaakFotoToevoegen" src="@Url.Content("~/images/"+ Model.artikel.Foto)" />
+                </td>
+            </tr>
+            <tr>
+                <td>ArtNr:</td>
+                <td>@Model.artikel.ArtNr</td>
+            </tr>
+            <tr>
+                <td>Naam:</td>
+                <td>@Model.artikel.Naam</td>
+            </tr>
+            <tr>
+                <td>Verkoopprijs:</td>
+                <td>@string.Format("{0:c}", Model.artikel.Prijs)</td>
+            </tr>
+            <tr>
+                <td>Voorraad:</td>
+                <td>@Model.artikel.Voorraad</td>
+            </tr>
+        </table>
+
+
+        <p>
+            Product toevoegen aan het winkelmandje: 
+            <input type="text" asp-for="Aantal" />
+            <input type="submit" value="Voeg toe aan het mandje..." />
+            <span asp-validation-for="Aantal" class="Fout"></span>
+            
+        </p>
+
+        <p class="Fout">@ViewBag.fout</p>
+        <p><a asp-action="Index">Terug naar de catalogus</a></p>
+    </form>
+</body>
+</html>
