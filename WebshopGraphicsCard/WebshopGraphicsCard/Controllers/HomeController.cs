@@ -26,7 +26,13 @@ namespace WebshopGraphicsCard.Controllers
             return View(ArtRepo);
         }
 
-        [HttpGet]
+        
+        public IActionResult Index(VMWinkelmand vMWinkelmand)
+        {
+            return RedirectToAction("Winkelmandje");
+        }
+
+       [HttpGet]
        public IActionResult Toevoegen(int ArtNr)
        {
             VMToevoegen vMToevoegen = new VMToevoegen();
@@ -65,14 +71,43 @@ namespace WebshopGraphicsCard.Controllers
             }           
         }
 
+
         [HttpGet]
         public IActionResult Winkelmandje(VMWinkelmand vMWinkelmand)
         {
-            
-            
-            vMWinkelmand.WinkelmandRepo.WinkelmandItems = PC.loadWinkelmand(vMWinkelmand.Klant.KlantNr);
+          
+            int klantnr = Convert.ToInt32(HttpContext.Session.GetString("KlantNr"));
+            vMWinkelmand.Klant = PC.loadKlant(Convert.ToInt32(klantnr));
+            if (PC.ControleerWinkelmand(klantnr) == true)
+            {
+                ViewBag.Leeg = true;               
+                WinkelmandRepository winkelRepo = new WinkelmandRepository();
+                winkelRepo.WinkelmandItems = PC.loadWinkelmand(klantnr);
+                vMWinkelmand.WinkelmandRepo = winkelRepo;
+                vMWinkelmand.BerekendGegeven = PC.CalculateTotaal();
+                
+            }
+            else
+            {
+                ViewBag.Leeg = false;
+            }
 
             return View(vMWinkelmand);
+            
         }
+
+       
+        [HttpGet]
+
+        public IActionResult DeleteItem(int ArtNr, int Aantal)
+        {
+            Winkelmand winkelmand = new Winkelmand();
+            winkelmand.ArtNr = ArtNr;
+            winkelmand.KlantNr = Convert.ToInt32(HttpContext.Session.GetString("KlantNr"));
+            winkelmand.Aantal = Aantal;
+            PC.DeleteWinkelmandItem(winkelmand);
+            return RedirectToAction("Winkelmandje");
+        }
+
     }
 }

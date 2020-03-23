@@ -119,7 +119,7 @@ namespace WebshopGraphicsCard.Persistence
             {
                 
                 klant.KlantNr = KlantNr;
-                klant.Naam = Convert.ToString(dtr["KlantNr"]);
+                klant.Naam = Convert.ToString(dtr["Naam"]);
                 klant.Voornaam = Convert.ToString(dtr["Voornaam"]);
                 klant.Adres = Convert.ToString(dtr["Adres"]);
                 klant.PostCode = Convert.ToString(dtr["PostCode"]);
@@ -138,6 +138,8 @@ namespace WebshopGraphicsCard.Persistence
         {
             MySqlConnection conn = new MySqlConnection(ConnStr);
             conn.Open();
+            //string qry = "select (prijs*aantal) as totaalexcl, tblwinkelmand.KlantNr, tblwinkelmand.ArtNr, tblwinkelmand.Aantal, tblartikel.Foto, tblartikel.Naam, tblartikel.Prijs from tblwinkelmand inner join tblartikel on tblwinkelmand.ArtNr = tblartikel.ArtNr where KlantNr = '1'";
+
             string qry = "select (prijs*aantal) as totaalexcl, tblwinkelmand.KlantNr, tblwinkelmand.ArtNr, tblwinkelmand.Aantal, tblartikel.Foto, tblartikel.Naam, tblartikel.Prijs from tblwinkelmand inner join tblartikel on tblwinkelmand.ArtNr = tblartikel.ArtNr where KlantNr = '" + KlantNr + "'";
             MySqlCommand cmd = new MySqlCommand(qry, conn);
             MySqlDataReader dtr = cmd.ExecuteReader();
@@ -164,7 +166,8 @@ namespace WebshopGraphicsCard.Persistence
         {
             MySqlConnection conn = new MySqlConnection(ConnStr);
             conn.Open();
-            string qry = "select (prijs * aantal) as TotaalExclu, ((prijs * aantal)*0.21) as btw, ((prijs * aantal)*1.21) as TotaalInclu from tblartikel inner join tblwinkelmand on tblwinkelmand.ArtNr = tblArtikel.ArtNr";
+            string qry = "select sum((prijs * aantal)) as TotaalExclu, sum(((prijs * aantal)*0.21)) as btw, sum( ((prijs * aantal)*1.21)) as TotaalInclu from tblartikel inner join tblwinkelmand on tblwinkelmand.ArtNr = tblArtikel.ArtNr";
+;
             MySqlCommand cmd = new MySqlCommand(qry, conn);
             MySqlDataReader dtr = cmd.ExecuteReader();
             BerekendGegeven berekendGegeven = new BerekendGegeven();
@@ -173,10 +176,53 @@ namespace WebshopGraphicsCard.Persistence
             {
                 berekendGegeven.BTW = Math.Round( Convert.ToDouble(dtr["BTW"]),2);
                 berekendGegeven.TotaalInclu = Math.Round( Convert.ToDouble(dtr["TotaalInclu"]),2);
-                berekendGegeven.TotaalExclu = Math.Round(Convert.ToDouble(dtr["TotaaalExclu"]), 2);
+                berekendGegeven.TotaalExclu = Math.Round(Convert.ToDouble(dtr["TotaalExclu"]), 2);               
             }
             conn.Close();
             return berekendGegeven;
         }
+
+
+
+        // Het item terug toevoegen in de voorraad van het artikel. Daarna het artikel zelf verwijderen uit het winkelmandje.
+        public void DeleteWinkelmandItem( Winkelmand winkelmand)
+        {
+            MySqlConnection conn = new MySqlConnection(ConnStr);
+            conn.Open();
+            string qry = "update tblartikel set voorraad = voorraad+" + winkelmand.Aantal + " where ArtNr=" + winkelmand.ArtNr;
+            MySqlCommand cmd = new MySqlCommand(qry, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+
+            MySqlConnection conn2 = new MySqlConnection(ConnStr);
+            conn2.Open();
+            string qry2 = "DELETE FROM `tblwinkelmand` WHERE(`KlantNr` = '" + winkelmand.KlantNr +"') and (`ArtNr` = '" + winkelmand.ArtNr + "')";
+            MySqlCommand cmd2 = new MySqlCommand(qry2, conn2);
+            cmd2.ExecuteNonQuery();
+            conn2.Close();        
+        }
+
+
+        //Het Controleren van het winkelmandje. Heeft deze items voor de klant of niet
+
+        public bool ControleerWinkelmand(int klantnr)
+        {
+            MySqlConnection conn = new MySqlConnection(ConnStr);
+            conn.Open();
+            string qry = "select * from tblwinkelmand where klantnr =" + klantnr;
+            MySqlCommand cmd = new MySqlCommand(qry, conn);
+            MySqlDataReader dtr = cmd.ExecuteReader();
+            if (dtr.HasRows == true)
+            {
+                conn.Close();
+                return true;
+            }
+            else
+            {
+                conn.Close();
+                return false;
+            }
+        }
+
     }
 }

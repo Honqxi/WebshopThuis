@@ -4,6 +4,9 @@
 .OpmaakFotoToevoegen {
    height: 250px;
 }
+.OpmaakFotoWinkelmand {
+    width: 100px;
+}
 .Centreer{
     text-align:center;
 }
@@ -12,20 +15,33 @@
     font-weight:bold;
     color:red;
 }
+
 .opmaakBalk {
     background-color:darkblue;
     color:white;
     font-weight:bold;
 }
+
 .opmaakBalkLijn {
     border-bottom-style: solid;
     border-color: darkblue;
     border-width: 2px;
 }
-
+.opmaakGeenLijn{
+    border:none;
+}
 .Div {
     background-image: url(~/images/Achtergrond.jpg); 
     width: 1850px;
     border: 15px solid whitesmoke;
     margin: 20px;
 }
+
+.rechtsplaatsen {
+    float: right;
+    width: 300px;   
+    padding: 10px;
+}
+
+
+
