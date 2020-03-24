@@ -1,7 +1,7 @@
 ﻿@model WebshopGraphicsCard.Models.ArtikelRepository
 
 <!DOCTYPE html>
-<html class="Div">
+<html>
 <head >
     <meta name="viewport" content="width=device-width" />
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -10,10 +10,10 @@
     <title>Catalogus</title>
 </head>
 <body class="m-3"  >
-    <form asp-action="Index" asp-controller="Home" class="Centreer">
+    <form asp-action="Index" asp-controller="Home">
         <h2>ONLINE VIDEOKAARTEN - Catalogus</h2>
         <table class="table">
-            <tr class="opmaakBalk">
+            <tr>
                 <td>ArtNr</td>
                 <td>Naam</td>
                 <td>Foto</td>
@@ -24,7 +24,7 @@
             @* Per record in onze database maken we een lijntje in onze catalogus aan en tonen we dit. *@
             @foreach (var artikel in Model.Artikels)
             {
-                <tr class="opmaakBalkLijn">
+                <tr>
                     <td>@artikel.ArtNr</td>
                     <td>@artikel.Naam</td>
                     <td><img class="OpmaakFotoCato" src="@Url.Content("~/images/" + artikel.Foto)"></td>

@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 
-<html class="Div">
+<html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -10,7 +10,7 @@
     <link href="~/css/site.css" rel="stylesheet" />
     <title>Toevoegen</title>
 </head>
-<body class="m-3, Centreer">
+<body class="m-3">
     <form asp-action="Toevoegen" asp-controller="Home">
         <h2>ONLINE VIDEOKAARTEN - Item toevoegen aan winkelmandje</h2>
         <table class="table">
@@ -46,7 +46,7 @@
             
         </p>
 
-        <p class="Fout"> @ViewBag.fout</p>
+        <p class="FoutMelding"> @ViewBag.fout</p>
         <p><a asp-action="Index">Terug naar de catalogus</a></p>
     </form>
 </body>
