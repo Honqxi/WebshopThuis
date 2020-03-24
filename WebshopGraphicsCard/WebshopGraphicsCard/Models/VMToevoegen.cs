@@ -10,6 +10,6 @@ namespace WebshopGraphicsCard.Models
     {
         public Artikel artikel { get; set; }
         [Required(ErrorMessage ="Verplicht in te vullen veld")]
-        public int Aantal { get; set; }
+        public int? Aantal { get; set; }
     }
 }

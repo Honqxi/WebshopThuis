@@ -162,7 +162,7 @@ namespace WebshopGraphicsCard.Persistence
 
 
 
-        public BerekendGegeven CalculateTotaal()
+        public BerekendGegeven BerekenTotaal()
         {
             MySqlConnection conn = new MySqlConnection(ConnStr);
             conn.Open();
@@ -223,6 +223,69 @@ namespace WebshopGraphicsCard.Persistence
                 return false;
             }
         }
+
+
+        public Bestelling MaakBestelling(int KlantNr)
+        {
+            //bestelling aanmaken. Alle gegevens invullen in de tabel bestelling.
+            MySqlConnection conn = new MySqlConnection(ConnStr);
+            conn.Open();
+            Bestelling bestelling = new Bestelling();
+            bestelling.Datum = DateTime.Now;
+            string CorrDatum = bestelling.Datum.ToString("yyyy-MM-dd");
+            string qry = "insert into tblBestelling (datum, KlantNr) VALUES ('" + CorrDatum + ", " + KlantNr + ")";
+            MySqlCommand cmd = new MySqlCommand(qry, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+
+            //OrderNr uit tblbestelling halen, Om die later terug in te plaatsen.
+            MySqlConnection conn2 = new MySqlConnection(ConnStr);
+            conn2.Open();
+            string qry2 = "select OrderNr from tblbestelling where KlantNr= " + KlantNr + "order by OrderNr desc LIMIT 1";
+            MySqlCommand cmd2 = new MySqlCommand();
+            MySqlDataReader dtr2 = cmd2.ExecuteReader();
+            while (dtr2.Read())
+            {
+                bestelling.OrderNr = Convert.ToInt32(dtr2["OrderNr"]);
+            }
+            conn2.Close();
+
+            //Alles uit het winkelmandje halen.
+            MySqlConnection conn3 = new MySqlConnection(ConnStr);
+            conn3.Open();
+            string qry3 = "select tblwinkelmand.ArtNr, Prijs, tblwinkelmand.Aantal from tblwinkelmand inner join tblArtikel on tblArtikel.artnr = tblwinkelmand.artnr where tblwinkelmand.KlantNr = '" + KlantNr + "'";
+            MySqlCommand cmd3 = new MySqlCommand(qry, conn);
+            MySqlDataReader dtr3 = cmd3.ExecuteReader();
+            List<Winkelmand> lijst = new List<Winkelmand>();
+
+            while (dtr3.Read())
+            {
+                Winkelmand winkelmand = new Winkelmand();
+                winkelmand.Prijs = Convert.ToDouble(dtr3["Prijs"]);
+                winkelmand.ArtNr = Convert.ToInt32(dtr3["ArtNr"]);
+                winkelmand.Aantal = Convert.ToInt32(dtr3["Aantal"]);
+
+                lijst.Add(winkelmand);
+            }
+            conn3.Close();
+
+            //Bestellijn creeëren, alle opgehaalde items terug in de bestellijn steken.
+           
+            foreach (var item in lijst)
+            {
+                MySqlConnection conn4 = new MySqlConnection(ConnStr);
+                conn4.Open();
+                string corrPrijs = Convert.ToString(item.Prijs).Replace(",", ".");
+                string qry4 = "insert into tblBestellijn (OrderNr, ArtNr,Aantal,Prijs) VALUES (" + bestelling.OrderNr + "," + item.ArtNr + "," + item.Aantal + "," + corrPrijs + ")";
+                MySqlCommand cmd4 = new MySqlCommand(qry4, conn4);
+                cmd4.ExecuteNonQuery();
+                conn4.Close();
+            }
+
+            return bestelling;
+        }
+
+
 
     }
 }

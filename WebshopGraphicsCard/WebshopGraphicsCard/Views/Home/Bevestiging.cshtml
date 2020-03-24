@@ -1,0 +1,21 @@
+﻿@model WebshopGraphicsCard.Models.VMbestelling
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Bevestiging</title>
+</head>
+<body>
+    <h2>ONLINE VIDEOKAARTEN - Bevestiging</h2>
+    <p>We hebben uw bestelling met bestelnummer <span>@Model.Bestelling.OrderNr</span> goed ontvangen.</p>
+    <p>Na overschrijving van <span> @ViewBag.Prijs  </span> op het rekeningnummer BE88 9654 4123 6541, zal de verzending van u videokaarten beginnen..</p>
+    <p>U ontving deze bevestiging ook via e-mail.</p>
+    <p>Bedankt voor uw vertrouwen.</p>
+    <p>Videokaarten Online.</p>
+
+    <a asp-action="Index" asp-controller="Home">Terug naar catalogus</a>
+</body>
+</html>
+

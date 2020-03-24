@@ -11,88 +11,89 @@
     <title>Winkelmandje</title>
 </head>
 <body class="m-3">
+    <form asp-action="Winkelmandje" asp-controller="Home">
+        <h2> ONLINE VIDEOKAARTEN - Winkelmandje</h2>
 
-    <h2> ONLINE VIDEOKAARTEN - Winkelmandje</h2>
-
-    <br />
-    <table class="table">
-        <tr>
-            <td>Klantnumer: </td>
-            <td>@Model.Klant.KlantNr</td>
-        </tr>
-        <tr>
-            <td>Naam:</td>
-            <td>@Model.Klant.Voornaam @Model.Klant.Naam </td>
-        </tr>
-        <tr >
-            <td>Adres:</td>
-            <td>@Model.Klant.Adres</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>@Model.Klant.Gemeente</td>
-        </tr>
-       
-        <tr>
-            <td>Besteldatum:</td>
-            <td>@DateTime.Now.ToLongDateString()</td>
-        </tr>
-    </table>
-
-    <table class="table">
-
-
-        <tr>
-            <td></td>
-            <td>Foto</td>
-            <td>ArtNr</td>
-            <td>Naam</td>
-            <td>Aantal</td>
-            <td>Prijs</td>
-            <td>Totaal</td>
-        </tr>
-        @if (ViewBag.Leeg == true)
-        {
-            @foreach (var item in Model.WinkelmandRepo.WinkelmandItems)
-            {
-                <tr>
-                    <td><a asp-action="DeleteItem" asp-route-ArtNr="@item.ArtNr" asp-route-Aantal="@item.Aantal" asp-controller="Home"> <img class="OpmaakFotoWinkelmand" src="@Url.Content("~/images/Prullenbak.png")" /> </a></td>
-                    <td><img class="OpmaakFotoWinkelmand" src="@Url.Content("~/images/" + item.Foto)"></td>
-                    <td>@item.ArtNr</td>
-                    <td>@item.Naam</td>
-                    <td>@item.Aantal</td>
-                    <td>@string.Format("{0:c}", item.Prijs) </td>
-                    <td>@string.Format("{0:c}", (item.Aantal * item.Prijs)) </td>
-                </tr>
-            }
-        }
-       
-    </table>
-    @if (ViewBag.Leeg == true)
-    {
+        <br />
         <table class="table">
             <tr>
-                <td> Totaal exclu</td>
-                <td>@string.Format("{0:c}", (Model.BerekendGegeven.TotaalExclu))</td>
+                <td>Klantnumer: </td>
+                <td>@Model.Klant.KlantNr</td>
             </tr>
             <tr>
-                <td> BTW (21%)</td>
-                <td>@string.Format("{0:c}", (Model.BerekendGegeven.BTW))</td>
+                <td>Naam:</td>
+                <td>@Model.Klant.Voornaam @Model.Klant.Naam </td>
             </tr>
             <tr>
-                <td>Totaal inclu </td>
-                <td>@string.Format("{0:c}", (Model.BerekendGegeven.TotaalInclu))</td>
+                <td>Adres:</td>
+                <td>@Model.Klant.Adres</td>
             </tr>
+            <tr>
+                <td></td>
+                <td>@Model.Klant.Gemeente</td>
+            </tr>
+
+            <tr>
+                <td>Besteldatum:</td>
+                <td>@DateTime.Now.ToLongDateString()</td>
+            </tr>
+        </table>
+
+        <table class="table">
+
+
+            <tr>
+                <td></td>
+                <td>Foto</td>
+                <td>ArtNr</td>
+                <td>Naam</td>
+                <td>Aantal</td>
+                <td>Prijs</td>
+                <td>Totaal</td>
+            </tr>
+            @if (ViewBag.Leeg == true)
+            {
+                @foreach (var item in Model.WinkelmandRepo.WinkelmandItems)
+                {
+                    <tr>
+                        <td><a asp-action="DeleteItem" asp-route-ArtNr="@item.ArtNr" asp-route-Aantal="@item.Aantal" asp-controller="Home"> <img class="OpmaakFotoVuilbak" src="@Url.Content("~/images/Prullenbak.png")" /> </a></td>
+                        <td><img class="OpmaakFotoWinkelmand" src="@Url.Content("~/images/" + item.Foto)"></td>
+                        <td>@item.ArtNr</td>
+                        <td>@item.Naam</td>
+                        <td>@item.Aantal</td>
+                        <td>@string.Format("{0:c}", item.Prijs) </td>
+                        <td>@string.Format("{0:c}", (item.Aantal * item.Prijs)) </td>
+                    </tr>
+                }
+            }
 
         </table>
-    }
-    else
-    {
-        <p>Je winkelmand is leeg.</p>
-    }
+        @if (ViewBag.Leeg == true)
+        {
+            <table class="table">
+                <tr>
+                    <td> Totaal exclu</td>
+                    <td>@string.Format("{0:c}", (Model.BerekendGegeven.TotaalExclu))</td>
+                </tr>
+                <tr>
+                    <td> BTW (21%)</td>
+                    <td>@string.Format("{0:c}", (Model.BerekendGegeven.BTW))</td>
+                </tr>
+                <tr>
+                    <td>Totaal inclu </td>
+                    <td>@string.Format("{0:c}", (Model.BerekendGegeven.TotaalInclu))</td>
+                </tr>
 
+            </table>
+        }
+        else
+        {
+            <p>Je winkelmand is leeg.</p>
+        }
 
-    <p><a asp-action="Index">Terug naar de catalogus</a></p>
+        <p><input type="submit" value="Inhoud van het winkelmandje bestellen" /></p>
 
+        <p><a asp-action="Index">Terug naar de catalogus</a></p>
+    </form>
 </body>
 </html>

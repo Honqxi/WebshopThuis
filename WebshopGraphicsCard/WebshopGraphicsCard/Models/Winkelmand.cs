@@ -8,7 +8,7 @@ namespace WebshopGraphicsCard.Models
     public class Winkelmand
     {
         public int ArtNr { get; set; }
-        public int Aantal { get; set; }
+        public int? Aantal { get; set; }
         public string Foto { get; set; }
         public string Naam { get; set; }
         public double Prijs { get; set; }

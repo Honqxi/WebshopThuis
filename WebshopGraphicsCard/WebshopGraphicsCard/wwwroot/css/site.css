@@ -8,11 +8,16 @@
 }
 .OpmaakFotoWinkelmand 
 {
-    width: 100px;
+    width: 150px;
 }
-
+.OpmaakFotoVuilbak {
+    width: 50px;
+}
 .FoutMelding 
 {
     font-weight: bold;
     color: red;
 }
+
+
+

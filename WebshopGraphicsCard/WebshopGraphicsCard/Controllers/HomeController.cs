@@ -60,7 +60,7 @@ namespace WebshopGraphicsCard.Controllers
                 }
                 else
                 {
-                    ViewBag.fout("Het aantal dat ingegeven is, is niet correct");
+                    ViewBag.fout = "Het aantal dat u ingeeft is niet correct.";
                     return View(vMToevoegen);
                 }
             }
@@ -84,7 +84,7 @@ namespace WebshopGraphicsCard.Controllers
                 WinkelmandRepository winkelRepo = new WinkelmandRepository();
                 winkelRepo.WinkelmandItems = PC.loadWinkelmand(klantnr);
                 vMWinkelmand.WinkelmandRepo = winkelRepo;
-                vMWinkelmand.BerekendGegeven = PC.CalculateTotaal();
+                vMWinkelmand.BerekendGegeven = PC.BerekenTotaal();
                 
             }
             else
@@ -109,5 +109,23 @@ namespace WebshopGraphicsCard.Controllers
             return RedirectToAction("Winkelmandje");
         }
 
+        [HttpPost]
+        public IActionResult Winkelmandje(VMbestelling vMbestelling)
+        {
+            int klantnr = Convert.ToInt32(HttpContext.Session.GetString("KlantNr"));
+            vMbestelling.klant = PC.loadKlant(klantnr);
+            vMbestelling.Bestelling = PC.MaakBestelling(klantnr);
+            BerekendGegeven berekendGegeven = new BerekendGegeven();
+            double totaal = berekendGegeven.TotaalInclu;
+            ViewBag.Totaal = totaal;
+            vMbestelling.Verzend();
+            return RedirectToAction("Bevestiging");
+        }
+
+        public IActionResult Bevestiging(VMbestelling vMbestelling)
+        {
+
+            return View(vMbestelling);
+        }
     }
 }

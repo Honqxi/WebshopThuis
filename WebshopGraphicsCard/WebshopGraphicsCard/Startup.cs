@@ -26,6 +26,9 @@ namespace WebshopGraphicsCard
             services.AddSession();
             services.AddDistributedMemoryCache();
             services.AddControllersWithViews();
+            services.AddMvc(options =>
+            options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor(
+                (v, p) => $"Dit is geen geldige invoer."));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
