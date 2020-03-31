@@ -25,9 +25,11 @@ namespace WebshopGraphicsCard.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (persistenceCode.CheckCredentials(LoginCr) != -1)
+                int IDx = persistenceCode.CheckCredentials(LoginCr);
+                if (IDx!= -1)
                 {
-                    HttpContext.Session.SetString("user", Convert.ToString(persistenceCode.CheckCredentials(LoginCr)));
+
+                    HttpContext.Session.SetString("user", Convert.ToString(IDx));
                     var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, LoginCr.Gebruikersnaam)

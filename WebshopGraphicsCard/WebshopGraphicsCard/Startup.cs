@@ -27,16 +27,18 @@ namespace WebshopGraphicsCard
             services.AddSession();
             services.AddDistributedMemoryCache();
             services.AddControllersWithViews();
-            services.AddMvc(options =>
-            options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor(
-                (v, p) => $"Dit is geen geldige invoer."));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
                  options =>
                  {
-                        options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Auth/Login");
+                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Auth/Login");
                  });
+
+            services.AddMvc(options =>
+            options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor(
+                (v, p) => $"Dit is geen geldige invoer."));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
