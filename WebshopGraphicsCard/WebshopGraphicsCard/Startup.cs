@@ -57,10 +57,11 @@ namespace WebshopGraphicsCard
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseAuthentication();
+
 
             app.UseEndpoints(endpoints =>
             {
