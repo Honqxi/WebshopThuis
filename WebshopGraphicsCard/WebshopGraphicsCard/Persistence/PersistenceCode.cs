@@ -36,7 +36,7 @@ namespace WebshopGraphicsCard.Persistence
             conn.Close();
             return lijst;
         }
-        
+
         public Artikel loadArtikel(int Nr)
         {
             MySqlConnection conn = new MySqlConnection(ConnStr);
@@ -47,14 +47,14 @@ namespace WebshopGraphicsCard.Persistence
             Artikel artikel = new Artikel();
             while (dtr.Read())
             {
-                
+
                 artikel.ArtNr = Convert.ToInt32(dtr["ArtNr"]);
                 artikel.Naam = Convert.ToString(dtr["Naam"]);
                 artikel.Voorraad = Convert.ToInt32(dtr["Voorraad"]);
                 artikel.Prijs = Convert.ToDouble(dtr["Prijs"]);
                 artikel.Foto = Convert.ToString(dtr["Foto"]);
 
-                
+
             }
             conn.Close();
             return artikel;
@@ -67,10 +67,10 @@ namespace WebshopGraphicsCard.Persistence
             conn1.Open();
 
             //Hier controleer je of het artikel al in het winkel mandje zit
-            string qry1 = "Select * from tblwinkelmand where (Artnr = '" + winkelmand.ArtNr + "') and (KlantNr = " + winkelmand.KlantNr + ")";                   
+            string qry1 = "Select * from tblwinkelmand where (Artnr = '" + winkelmand.ArtNr + "') and (KlantNr = " + winkelmand.KlantNr + ")";
             MySqlCommand cmd1 = new MySqlCommand(qry1, conn1);
             MySqlDataReader dtr1 = cmd1.ExecuteReader();
-            
+
 
             //zoja, dan update je het aantal
             if (dtr1.HasRows)
@@ -83,16 +83,16 @@ namespace WebshopGraphicsCard.Persistence
                 MySqlCommand cmd2 = new MySqlCommand(qry2, conn2);
                 cmd2.ExecuteNonQuery();
                 conn2.Close();
-                
+
             }
             else // Zonee, dan insert je het artikel en het aantal
             {
                 MySqlConnection conn3 = new MySqlConnection(ConnStr);
                 conn3.Open();
                 //Als het artikel niet in het winkelmandje zit dan voeg je het eraan toe 
-                string qry3 = "INSERT INTO `tblwinkelmand` (`KlantNr`, `ArtNr`, `Aantal`) VALUES ('"+ winkelmand.KlantNr+"', '" + winkelmand.ArtNr + "', '" + winkelmand.Aantal + "')";
+                string qry3 = "INSERT INTO `tblwinkelmand` (`KlantNr`, `ArtNr`, `Aantal`) VALUES ('" + winkelmand.KlantNr + "', '" + winkelmand.ArtNr + "', '" + winkelmand.Aantal + "')";
                 MySqlCommand cmd3 = new MySqlCommand(qry3, conn3);
-                 cmd3.ExecuteNonQuery();
+                cmd3.ExecuteNonQuery();
                 conn3.Close();
             }
 
@@ -111,13 +111,13 @@ namespace WebshopGraphicsCard.Persistence
 
             MySqlConnection conn = new MySqlConnection(ConnStr);
             conn.Open();
-            string qry = "select * from tblklant where KlantNr='" +  KlantNr+"'";
+            string qry = "select * from tblklant where KlantNr='" + KlantNr + "'";
             MySqlCommand cmd = new MySqlCommand(qry, conn);
             MySqlDataReader dtr = cmd.ExecuteReader();
             Klant klant = new Klant();
             while (dtr.Read())
             {
-                
+
                 klant.KlantNr = KlantNr;
                 klant.Naam = Convert.ToString(dtr["Naam"]);
                 klant.Voornaam = Convert.ToString(dtr["Voornaam"]);
@@ -125,7 +125,7 @@ namespace WebshopGraphicsCard.Persistence
                 klant.PostCode = Convert.ToString(dtr["PostCode"]);
                 klant.Gemeente = Convert.ToString(dtr["Gemeente"]);
                 klant.Mail = Convert.ToString(dtr["Mail"]);
-                
+
 
             }
             conn.Close();
@@ -167,16 +167,16 @@ namespace WebshopGraphicsCard.Persistence
             MySqlConnection conn = new MySqlConnection(ConnStr);
             conn.Open();
             string qry = "select sum((prijs * aantal)) as TotaalExclu, sum(((prijs * aantal)*0.21)) as btw, sum( ((prijs * aantal)*1.21)) as TotaalInclu from tblartikel inner join tblwinkelmand on tblwinkelmand.ArtNr = tblArtikel.ArtNr";
-;
+            ;
             MySqlCommand cmd = new MySqlCommand(qry, conn);
             MySqlDataReader dtr = cmd.ExecuteReader();
             BerekendGegeven berekendGegeven = new BerekendGegeven();
 
             while (dtr.Read())
             {
-                berekendGegeven.BTW = Math.Round( Convert.ToDouble(dtr["BTW"]),2);
-                berekendGegeven.TotaalInclu = Math.Round( Convert.ToDouble(dtr["TotaalInclu"]),2);
-                berekendGegeven.TotaalExclu = Math.Round(Convert.ToDouble(dtr["TotaalExclu"]), 2);               
+                berekendGegeven.BTW = Math.Round(Convert.ToDouble(dtr["BTW"]), 2);
+                berekendGegeven.TotaalInclu = Math.Round(Convert.ToDouble(dtr["TotaalInclu"]), 2);
+                berekendGegeven.TotaalExclu = Math.Round(Convert.ToDouble(dtr["TotaalExclu"]), 2);
             }
             conn.Close();
             return berekendGegeven;
@@ -185,7 +185,7 @@ namespace WebshopGraphicsCard.Persistence
 
 
         // Het item terug toevoegen in de voorraad van het artikel. Daarna het artikel zelf verwijderen uit het winkelmandje.
-        public void DeleteWinkelmandItem( Winkelmand winkelmand)
+        public void DeleteWinkelmandItem(Winkelmand winkelmand)
         {
             MySqlConnection conn = new MySqlConnection(ConnStr);
             conn.Open();
@@ -196,10 +196,10 @@ namespace WebshopGraphicsCard.Persistence
 
             MySqlConnection conn2 = new MySqlConnection(ConnStr);
             conn2.Open();
-            string qry2 = "DELETE FROM `tblwinkelmand` WHERE(`KlantNr` = '" + winkelmand.KlantNr +"') and (`ArtNr` = '" + winkelmand.ArtNr + "')";
+            string qry2 = "DELETE FROM `tblwinkelmand` WHERE(`KlantNr` = '" + winkelmand.KlantNr + "') and (`ArtNr` = '" + winkelmand.ArtNr + "')";
             MySqlCommand cmd2 = new MySqlCommand(qry2, conn2);
             cmd2.ExecuteNonQuery();
-            conn2.Close();        
+            conn2.Close();
         }
 
 
@@ -231,9 +231,8 @@ namespace WebshopGraphicsCard.Persistence
             MySqlConnection conn = new MySqlConnection(ConnStr);
             conn.Open();
             Bestelling bestelling = new Bestelling();
-            bestelling.Datum = DateTime.Now;
-            string CorrDatum = bestelling.Datum.ToString("yyyy-MM-dd");
-            string qry = "insert into tblBestelling (datum, KlantNr) VALUES ('" + CorrDatum + ", " + KlantNr + ")";
+            string CorrDatum = DateTime.Now.ToString("yyyy-MM-dd");
+            string qry = "insert into tblBestelling (orderdatum, KlantNr) VALUES ('" + CorrDatum + "', " + KlantNr + ")";
             MySqlCommand cmd = new MySqlCommand(qry, conn);
             cmd.ExecuteNonQuery();
             conn.Close();
@@ -241,8 +240,8 @@ namespace WebshopGraphicsCard.Persistence
             //OrderNr uit tblbestelling halen, Om die later terug in te plaatsen.
             MySqlConnection conn2 = new MySqlConnection(ConnStr);
             conn2.Open();
-            string qry2 = "select OrderNr from tblbestelling where KlantNr= " + KlantNr + "order by OrderNr desc LIMIT 1";
-            MySqlCommand cmd2 = new MySqlCommand();
+            string qry2 = "select OrderNr from tblbestelling where KlantNr= '" + KlantNr + "'  order by OrderNr desc LIMIT 1";
+            MySqlCommand cmd2 = new MySqlCommand(qry2, conn2);
             MySqlDataReader dtr2 = cmd2.ExecuteReader();
             while (dtr2.Read())
             {
@@ -254,7 +253,7 @@ namespace WebshopGraphicsCard.Persistence
             MySqlConnection conn3 = new MySqlConnection(ConnStr);
             conn3.Open();
             string qry3 = "select tblwinkelmand.ArtNr, Prijs, tblwinkelmand.Aantal from tblwinkelmand inner join tblArtikel on tblArtikel.artnr = tblwinkelmand.artnr where tblwinkelmand.KlantNr = '" + KlantNr + "'";
-            MySqlCommand cmd3 = new MySqlCommand(qry, conn);
+            MySqlCommand cmd3 = new MySqlCommand(qry3, conn3);
             MySqlDataReader dtr3 = cmd3.ExecuteReader();
             List<Winkelmand> lijst = new List<Winkelmand>();
 
@@ -270,7 +269,7 @@ namespace WebshopGraphicsCard.Persistence
             conn3.Close();
 
             //Bestellijn creeëren, alle opgehaalde items terug in de bestellijn steken.
-           
+
             foreach (var item in lijst)
             {
                 MySqlConnection conn4 = new MySqlConnection(ConnStr);
@@ -282,10 +281,34 @@ namespace WebshopGraphicsCard.Persistence
                 conn4.Close();
             }
 
+
+            //Winkelmandje legen
+
+            MySqlConnection conn5 = new MySqlConnection(ConnStr);
+            conn5.Open();
+            string qry5 = "delete from tblWinkelmand where klantNr = " + KlantNr;
+            MySqlCommand cmd5 = new MySqlCommand(qry5, conn5);
+            cmd5.ExecuteNonQuery();
+            conn5.Close();
+
             return bestelling;
         }
 
 
-
+        public int CheckCredentials(Klant klant)
+        {
+            MySqlConnection conn = new MySqlConnection(ConnStr);
+            conn.Open();
+            string qry = "select * from tblklant where gebruikersnaam='" + klant.Gebruikersnaam + "' and binary wachtwoord='" + klant.Wachtwoord + "'";
+            MySqlCommand cmd = new MySqlCommand(qry, conn);
+            MySqlDataReader dtr = cmd.ExecuteReader();
+            int usrID = -1;
+            while (dtr.Read())
+            {
+                usrID = Convert.ToInt32(dtr["klantnr"]);
+            }
+            conn.Close();
+            return usrID;
+        }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using WebshopGraphicsCard.Models;
 using WebshopGraphicsCard.Persistence;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebshopGraphicsCard.Controllers
 {
@@ -16,23 +17,26 @@ namespace WebshopGraphicsCard.Controllers
         
         PersistenceCode PC = new PersistenceCode();
 
+        //De catalogus ophalen
+        [Authorize]
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(ArtikelRepository ArtRepo)
         {
             Klant klant = new Klant();
-            HttpContext.Session.SetString("KlantNr", "1");
-            ArtikelRepository ArtRepo = new ArtikelRepository();
+            HttpContext.Session.SetString("KlantNr", Convert.ToString(klant.KlantNr));
+            
             ArtRepo.Artikels = PC.loadArtikels();
             return View(ArtRepo);
         }
 
-        
+        [Authorize]
         public IActionResult Index(VMWinkelmand vMWinkelmand)
         {
             return RedirectToAction("Winkelmandje");
         }
 
-       [HttpGet]
+        [Authorize]
+        [HttpGet]
        public IActionResult Toevoegen(int ArtNr)
        {
             VMToevoegen vMToevoegen = new VMToevoegen();
@@ -41,7 +45,7 @@ namespace WebshopGraphicsCard.Controllers
             return View(vMToevoegen);
         }
 
-        
+        [Authorize]
         [HttpPost]
         public IActionResult Toevoegen(VMToevoegen vMToevoegen)
         {
@@ -71,11 +75,10 @@ namespace WebshopGraphicsCard.Controllers
             }           
         }
 
-
+        [Authorize]
         [HttpGet]
         public IActionResult Winkelmandje(VMWinkelmand vMWinkelmand)
         {
-          
             int klantnr = Convert.ToInt32(HttpContext.Session.GetString("KlantNr"));
             vMWinkelmand.Klant = PC.loadKlant(Convert.ToInt32(klantnr));
             if (PC.ControleerWinkelmand(klantnr) == true)
@@ -85,7 +88,8 @@ namespace WebshopGraphicsCard.Controllers
                 winkelRepo.WinkelmandItems = PC.loadWinkelmand(klantnr);
                 vMWinkelmand.WinkelmandRepo = winkelRepo;
                 vMWinkelmand.BerekendGegeven = PC.BerekenTotaal();
-                
+                HttpContext.Session.SetString("TotaalInclu", Convert.ToString(vMWinkelmand.BerekendGegeven.TotaalInclu));
+
             }
             else
             {
@@ -96,9 +100,8 @@ namespace WebshopGraphicsCard.Controllers
             
         }
 
-       
+        [Authorize]
         [HttpGet]
-
         public IActionResult DeleteItem(int ArtNr, int Aantal)
         {
             Winkelmand winkelmand = new Winkelmand();
@@ -109,21 +112,28 @@ namespace WebshopGraphicsCard.Controllers
             return RedirectToAction("Winkelmandje");
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Winkelmandje(VMbestelling vMbestelling)
         {
             int klantnr = Convert.ToInt32(HttpContext.Session.GetString("KlantNr"));
             vMbestelling.klant = PC.loadKlant(klantnr);
             vMbestelling.Bestelling = PC.MaakBestelling(klantnr);
-            BerekendGegeven berekendGegeven = new BerekendGegeven();
-            double totaal = berekendGegeven.TotaalInclu;
-            ViewBag.Totaal = totaal;
-            vMbestelling.Verzend();
+            double TotaalInclu = Convert.ToDouble(HttpContext.Session.GetString("TotaalInclu"));
+            ViewBag.TotaalInclu = TotaalInclu;
+            vMbestelling.Verzend(TotaalInclu);
             return RedirectToAction("Bevestiging");
         }
 
+        [Authorize]
         public IActionResult Bevestiging(VMbestelling vMbestelling)
         {
+            int klantnr = Convert.ToInt32(HttpContext.Session.GetString("KlantNr"));
+            vMbestelling.klant = PC.loadKlant(klantnr);
+            vMbestelling.Bestelling = PC.MaakBestelling(klantnr);
+            double TotaalInclu = Convert.ToDouble(HttpContext.Session.GetString("TotaalInclu"));
+            ViewBag.TotaalInclu = TotaalInclu;
+            
 
             return View(vMbestelling);
         }
