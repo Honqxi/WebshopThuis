@@ -22,7 +22,7 @@ namespace WebshopGraphicsCard.Models
                              "Bedankt voor uw vertrouwen. \n" +
                              "VideoKaarten Online.";
             SendGridClient client = new SendGridClient(Environment.GetEnvironmentVariable("mijnAPIkey"));
-            EmailAddress from = new EmailAddress("OnlineVideoKaartShop@gmail.com", "YenteJoakim123");
+            EmailAddress from = new EmailAddress("OnlineVideoKaartShop@gmail.com", "Online Videokaarten shop");
             EmailAddress to = new EmailAddress(klant.Mail, klant.Naam);
             client.SendEmailAsync(MailHelper.CreateSingleEmail(from, to, onderwerp, bericht, ""));                                                       
         }

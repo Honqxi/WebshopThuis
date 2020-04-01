@@ -16,25 +16,25 @@ namespace WebshopGraphicsCard.Controllers
     {
         
         PersistenceCode PC = new PersistenceCode();
+        
 
-        //De catalogus ophalen
+        //De catalogus ophalen met alle artikelen en zijn prijs. 
         [Authorize]
         [HttpGet]
         public IActionResult Index(ArtikelRepository ArtRepo)
-        {
-            Klant klant = new Klant();
-            HttpContext.Session.SetString("KlantNr", Convert.ToString(klant.KlantNr));
-            
+        {                   
             ArtRepo.Artikels = PC.loadArtikels();
             return View(ArtRepo);
         }
 
+        // Om rechtsreeks naar het winkelmandje te gaan.
         [Authorize]
         public IActionResult Index(VMWinkelmand vMWinkelmand)
         {
             return RedirectToAction("Winkelmandje");
         }
 
+        //Een artikel laden om deze "misschien" toe te voegen aan het winkelmandje
         [Authorize]
         [HttpGet]
        public IActionResult Toevoegen(int ArtNr)
@@ -45,6 +45,8 @@ namespace WebshopGraphicsCard.Controllers
             return View(vMToevoegen);
         }
 
+
+        //Het geselecteerde winkelmandje ophalen.
         [Authorize]
         [HttpPost]
         public IActionResult Toevoegen(VMToevoegen vMToevoegen)
@@ -56,7 +58,7 @@ namespace WebshopGraphicsCard.Controllers
             {                  
                 if ((vMToevoegen.Aantal > 0) && (vMToevoegen.Aantal <= vMToevoegen.artikel.Voorraad ))
                 {
-                    winkelmand.KlantNr = Convert.ToInt32(HttpContext.Session.GetString("KlantNr"));
+                    winkelmand.KlantNr = Convert.ToInt32(HttpContext.Session.GetString("user"));
                     winkelmand.Aantal = vMToevoegen.Aantal;
                     winkelmand.ArtNr = Convert.ToInt32(HttpContext.Session.GetString("ArtNr"));
                     PC.PasMandjeAan(winkelmand);
@@ -79,7 +81,7 @@ namespace WebshopGraphicsCard.Controllers
         [HttpGet]
         public IActionResult Winkelmandje(VMWinkelmand vMWinkelmand)
         {
-            int klantnr = Convert.ToInt32(HttpContext.Session.GetString("KlantNr"));
+            int klantnr = Convert.ToInt32(HttpContext.Session.GetString("user"));
             vMWinkelmand.Klant = PC.loadKlant(Convert.ToInt32(klantnr));
             if (PC.ControleerWinkelmand(klantnr) == true)
             {
@@ -106,7 +108,7 @@ namespace WebshopGraphicsCard.Controllers
         {
             Winkelmand winkelmand = new Winkelmand();
             winkelmand.ArtNr = ArtNr;
-            winkelmand.KlantNr = Convert.ToInt32(HttpContext.Session.GetString("KlantNr"));
+            winkelmand.KlantNr = Convert.ToInt32(HttpContext.Session.GetString("user"));
             winkelmand.Aantal = Aantal;
             PC.DeleteWinkelmandItem(winkelmand);
             return RedirectToAction("Winkelmandje");
@@ -116,7 +118,7 @@ namespace WebshopGraphicsCard.Controllers
         [HttpPost]
         public IActionResult Winkelmandje(VMbestelling vMbestelling)
         {
-            int klantnr = Convert.ToInt32(HttpContext.Session.GetString("KlantNr"));
+            int klantnr = Convert.ToInt32(HttpContext.Session.GetString("user"));
             vMbestelling.klant = PC.loadKlant(klantnr);
             vMbestelling.Bestelling = PC.MaakBestelling(klantnr);
             double TotaalInclu = Convert.ToDouble(HttpContext.Session.GetString("TotaalInclu"));
@@ -128,7 +130,7 @@ namespace WebshopGraphicsCard.Controllers
         [Authorize]
         public IActionResult Bevestiging(VMbestelling vMbestelling)
         {
-            int klantnr = Convert.ToInt32(HttpContext.Session.GetString("KlantNr"));
+            int klantnr = Convert.ToInt32(HttpContext.Session.GetString("user"));
             vMbestelling.klant = PC.loadKlant(klantnr);
             vMbestelling.Bestelling = PC.MaakBestelling(klantnr);
             double TotaalInclu = Convert.ToDouble(HttpContext.Session.GetString("TotaalInclu"));
