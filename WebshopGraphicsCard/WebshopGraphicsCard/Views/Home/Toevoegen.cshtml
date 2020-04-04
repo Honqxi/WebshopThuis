@@ -11,43 +11,50 @@
     <title>Toevoegen</title>
 </head>
 <body class="m-3">
-    <form asp-action="Toevoegen" asp-controller="Home">
-        <h2>ONLINE VIDEOKAARTEN - Item toevoegen aan winkelmandje</h2>
-        <table class="table">
-            <tr>
-                <td rowspan="5">
-                    <img class="OpmaakFotoToevoegen" src="@Url.Content("~/images/"+ Model.artikel.Foto)" />
-                </td>
-            </tr>
-            <tr>
-                <td>ArtNr:</td>
-                <td>@Model.artikel.ArtNr</td>
-            </tr>
-            <tr>
-                <td>Naam:</td>
-                <td>@Model.artikel.Naam</td>
-            </tr>
-            <tr>
-                <td>Verkoopprijs:</td>
-                <td>@string.Format("{0:c}", Model.artikel.Prijs)</td>
-            </tr>
-            <tr>
-                <td>Voorraad:</td>
-                <td>@Model.artikel.Voorraad</td>
-            </tr>
-        </table>
+    <div class="div p-5 Centreer">
+        <form asp-action="Toevoegen" asp-controller="Home">
+            <h2 class="OpmaakTitels">ONLINE VIDEOKAARTEN - Item toevoegen aan winkelmandje</h2>
+            <table class="table OpmaakLijnWegdoen ">
+                <tr >
+                    <td rowspan="5">
+                        <img class="OpmaakFotoToevoegen" src="@Url.Content("~/images/"+ Model.artikel.Foto)" />
+                    </td>
+                </tr>
+                <tr class="LinksToevoegen">
+                    <td class="KleurTekst">ArtNr:</td>
+                    <td>@Model.artikel.ArtNr</td>
+                </tr>
+                <tr class="LinksToevoegen">
+                    <td class="KleurTekst">Naam:</td>
+                    <td>@Model.artikel.Naam</td>
+                </tr>
+                <tr class="LinksToevoegen">
+                    <td class="KleurTekst">Verkoopprijs:</td>
+                    <td>@string.Format("{0:c}", Model.artikel.Prijs)</td>
+                </tr>
+                <tr class="LinksToevoegen">
+                    <td class="KleurTekst">Voorraad:</td>
+                    <td>@Model.artikel.Voorraad</td>
+                </tr>
+            </table>
 
 
-        <p>
-            Product toevoegen aan het winkelmandje: 
-            <input type="text" asp-for="Aantal" />
-            <input type="submit" value="Voeg toe aan het mandje..." />
-            <span asp-validation-for="Aantal" class="Fout"></span>
-            
-        </p>
+            <p>
+                Product toevoegen aan het winkelmandje:
+                <input type="text" asp-for="Aantal" />
+                <input type="submit" value="Voeg toe aan het mandje..." />
+                <span asp-validation-for="Aantal" class="Fout"></span>
 
-        <p class="FoutMelding"> @ViewBag.fout</p>
-        <p><a asp-action="Index">Terug naar de catalogus</a></p>
-    </form>
+            </p>
+
+            <p class="FoutMelding"> @ViewBag.fout</p>
+            <p><a asp-action="Index">Terug naar de catalogus</a></p>
+        </form>
+    </div>
+
+    
 </body>
 </html>
+
+
+

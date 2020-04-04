@@ -2,16 +2,16 @@
 {
     width: 150px;
 }
-.OpmaakFotoToevoegen 
-{
-    height: 250px;
+.OpmaakFotoToevoegen {
+    height: 400px;
+    
 }
 .OpmaakFotoWinkelmand 
 {
-    width: 150px;
+    width: 100px;
 }
 .OpmaakFotoVuilbak {
-    width: 50px;
+    width: 25px;
 }
 .FoutMelding 
 {
@@ -19,5 +19,69 @@
     color: red;
 }
 
+.OpmaakBalk {
+    background-color: #2187cb;
+    color: white;
+    text-align: center;
+    
+}
 
+.Centreer 
+{
+    text-align: center;
+}
 
+body
+{
+   background-image: url("../images/WebShopAchtergrond.jpg");
+   background-size: cover;
+   background-position: center;
+   background-attachment:fixed;
+   background-repeat:no-repeat;
+}
+
+.div {
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-bottom: 125px;
+    margin-top: 30px;
+    padding-top: 30px;
+    box-shadow: 5px 5px 5px 5px rgb(134, 134, 134);
+    background-color:white;
+}
+
+.OpmaakLijn 
+{
+    border-bottom: 2px solid #2187cb;
+}
+
+.OpmaakTitels {
+    color: #2187cb;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+.LinksToevoegen {
+    text-align: left;
+    border-style: hidden;
+    
+}
+
+table 
+{
+    border-collapse: collapse;
+}
+.OpmaakLijnWegdoen {
+    
+    border-style: hidden;
+}
+
+.KleurTekst {
+    color: #2187cb;
+    font-weight:bold;
+}
+
+.RechtsBerekenen {
+    text-align: right;
+    border-style: hidden;
+}

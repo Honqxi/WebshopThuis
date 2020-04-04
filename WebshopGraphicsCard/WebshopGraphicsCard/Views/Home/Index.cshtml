@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html>
-<head >
+<head>
     <meta name="viewport" content="width=device-width" />
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
@@ -10,43 +10,47 @@
     <title>Catalogus</title>
 </head>
 <body class="m-3"  >
-    <form asp-action="Index" asp-controller="Home">
-        <h2>ONLINE VIDEOKAARTEN - Catalogus</h2>
-        <table class="table">
-            <tr>
-                <td>ArtNr</td>
-                <td>Naam</td>
-                <td>Foto</td>
-                <td>Verkoopprijs</td>
-                <td>Voorraad</td>
-                <td></td>
-            </tr>
-            @* Per record in onze database maken we een lijntje in onze catalogus aan en tonen we dit. *@
-            @foreach (var artikel in Model.Artikels)
-            {
-                <tr>
-                    <td>@artikel.ArtNr</td>
-                    <td>@artikel.Naam</td>
-                    <td><img class="OpmaakFotoCato" src="@Url.Content("~/images/" + artikel.Foto)"></td>
-                    <td>@string.Format("{0:c}", artikel.Prijs)</td>
-                    <td>@artikel.Voorraad</td>
-                    <td>
-                        @* Wanneer er geen voorraad is moet de action link niet getoont worden en komt er een melding dat de voorraad op is. *@
-                        @if (artikel.Voorraad > 0)
-                        {
-                            <a asp-action="Toevoegen" asp-route-ArtNr="@artikel.ArtNr">Voeg toe aan het winkelmandje...</a>
-                        }
-                        else
-                        {
-                            <p>Niet op voorraad</p>
-                        }
-                    </td>
-                </tr>
-            }
-        </table>
-        <p><input type="submit" value="Bekijk de inhoud van het winkelmandje" /></p>
-        @*Nog afmeld erbij zetten*@
-    </form>
+    <div class="div p-3 Centreer">
 
+
+        <form asp-action="Index" asp-controller="Home">
+            <h2 class="OpmaakTitels">ONLINE VIDEOKAARTEN - Catalogus</h2>
+            
+            <table class="table">
+                <tr class="OpmaakBalk">
+                    <td>ArtNr</td>
+                    <td>Naam</td>
+                    <td>Foto</td>
+                    <td>Verkoopprijs</td>
+                    <td>Voorraad</td>
+                    <td></td>
+                </tr>
+                @* Per record in onze database maken we een lijntje in onze catalogus aan en tonen we dit. *@
+                @foreach (var artikel in Model.Artikels)
+                {
+                    <tr >
+                        <td class="OpmaakLijn">@artikel.ArtNr</td>
+                        <td class="OpmaakLijn">@artikel.Naam</td>
+                        <td class="OpmaakLijn"><img class="OpmaakFotoCato" src="@Url.Content("~/images/" + artikel.Foto)"></td>
+                        <td class="OpmaakLijn">@string.Format("{0:c}", artikel.Prijs)</td>
+                        <td class="OpmaakLijn">@artikel.Voorraad</td>
+                        <td class="OpmaakLijn">
+                            @* Wanneer er geen voorraad is moet de action link niet getoont worden en komt er een melding dat de voorraad op is. *@
+                            @if (artikel.Voorraad > 0)
+                            {
+                                <a asp-action="Toevoegen" asp-route-ArtNr="@artikel.ArtNr" >Voeg toe aan het winkelmandje...</a>
+                            }
+                            else
+                            {
+                                <p>Niet op voorraad</p>
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+            <p><input type="submit" value="Bekijk de inhoud van het winkelmandje" /></p>
+            <p><a asp-action="Logout" asp-controller="Auth">Afmelden</a> </p>
+        </form>
+    </div>
 </body>
 </html>

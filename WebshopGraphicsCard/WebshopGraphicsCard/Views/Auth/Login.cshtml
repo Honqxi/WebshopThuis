@@ -4,24 +4,33 @@
 
 <html>
 <head>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width" />
     <title>Login</title>
 </head>
-<body>
-    <form asp-action="Login" asp-controller="Auth">
-        <h2>ONLINE VIDEOKAARTEN - Aanmelden</h2>
-        <table>
-            <tr>
-                <td>Gebruikersnaam: </td>
-                <td><input type="text" asp-for="Gebruikersnaam"/><span asp-validation-for="Gebruikersnaam"></span></td>
-            </tr>
-            <tr>
-                <td>Wachtwoord: </td>
-                <td><input type="password" asp-for="Wachtwoord"/><span asp-validation-for="Wachtwoord"></span></td>
-            </tr>
-        </table>
-        <p><input type="submit" value="Meld me aan..."/></p>
-        <p>@ViewBag.Fout</p>
-    </form>
+<body class="Centreer">
+    <div class="div">
+        <form asp-action="Login" asp-controller="Auth" >
+
+            <h2 class="OpmaakTitels">ONLINE VIDEOKAARTEN - Aanmelden</h2>
+            <table align="center">
+                <tr>
+                    <td>Gebruikersnaam: </td>
+                    <td><input type="text" asp-for="Gebruikersnaam" /><span asp-validation-for="Gebruikersnaam" class="FoutMelding"></span></td>
+                </tr>
+                <tr>
+                    <td>Wachtwoord: </td>
+                    <td><input type="password" asp-for="Wachtwoord" /><span asp-validation-for="Wachtwoord" class="FoutMelding"></span></td>
+                </tr>
+            </table>
+            <br />
+            <p><input type="submit" value="Meld me aan..." /></p>
+            <p class="FoutMelding">@ViewBag.Fout</p>
+            <br />
+        </form>
+    </div>
+    
 </body>
 </html>

@@ -4,18 +4,25 @@
 
 <html>
 <head>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width" />
     <title>Bevestiging</title>
 </head>
 <body>
-    <h2>ONLINE VIDEOKAARTEN - Bevestiging</h2>
-    <p>We hebben uw bestelling met bestelnummer <span>@Model.Bestelling.OrderNr</span> goed ontvangen.</p>
-    <p>Na overschrijving van <span> @string.Format("{0:c}",@ViewBag.TotaalInclu )  </span> op het rekeningnummer BE88 9654 4123 6541, zal de verzending van u videokaarten beginnen..</p>
-    <p>U ontving deze bevestiging ook via e-mail.</p>
-    <p>Bedankt voor uw vertrouwen.</p>
-    <p>Videokaarten Online.</p>
+    <div class="div p-3">
+        <h2 class="OpmaakTitels Centreer">ONLINE VIDEOKAARTEN - Bevestiging</h2>
+        <p>We hebben uw bestelling met bestelnummer <span class="KleurTekst">@Model.Bestelling.OrderNr</span> goed ontvangen.</p>
+        <p>Na overschrijving van <span class="KleurTekst"> @string.Format("{0:c}", @ViewBag.TotaalInclu)  </span> op het rekeningnummer <span class="KleurTekst">BE88 9654 4123 6541</span>, zal de verzending van u videokaarten beginnen..</p>
+        <p>U ontving deze bevestiging ook via e-mail.</p>
+        <p>Bedankt voor uw vertrouwen.</p>
+        <p>Videokaarten Online.</p>
 
-    <a asp-action="Index" asp-controller="Home">Terug naar catalogus</a>
+        <p class="Centreer"<a asp-action="Index" asp-controller="Home">Terug naar catalogus</a></p>
+    </div>
+
+    
 </body>
 </html>
 
