@@ -29,6 +29,7 @@ namespace WebshopGraphicsCard.Controllers
 
         // Om rechtsreeks naar het winkelmandje te gaan.
         [Authorize]
+        
         public IActionResult Index(VMWinkelmand vMWinkelmand)
         {
             return RedirectToAction("Winkelmandje");
@@ -37,8 +38,8 @@ namespace WebshopGraphicsCard.Controllers
         //Een artikel laden om deze "misschien" toe te voegen aan het winkelmandje
         [Authorize]
         [HttpGet]
-       public IActionResult Toevoegen(int ArtNr)
-       {
+        public IActionResult Toevoegen(int ArtNr)
+        {
             VMToevoegen vMToevoegen = new VMToevoegen();
             vMToevoegen.artikel= PC.loadArtikel(ArtNr);
             HttpContext.Session.SetString("ArtNr", ArtNr.ToString());
@@ -118,24 +119,23 @@ namespace WebshopGraphicsCard.Controllers
         [HttpPost]
         public IActionResult Winkelmandje(VMbestelling vMbestelling)
         {
-            int klantnr = Convert.ToInt32(HttpContext.Session.GetString("user"));
-            vMbestelling.klant = PC.loadKlant(klantnr);
-            vMbestelling.Bestelling = PC.MaakBestelling(klantnr);
-            double TotaalInclu = Convert.ToDouble(HttpContext.Session.GetString("TotaalInclu"));
-            ViewBag.TotaalInclu = TotaalInclu;
-            vMbestelling.Verzend(TotaalInclu);
+           
             return RedirectToAction("Bevestiging");
         }
 
         [Authorize]
+        [HttpGet]
         public IActionResult Bevestiging(VMbestelling vMbestelling)
         {
+            
             int klantnr = Convert.ToInt32(HttpContext.Session.GetString("user"));
             vMbestelling.klant = PC.loadKlant(klantnr);
             vMbestelling.Bestelling = PC.MaakBestelling(klantnr);
             double TotaalInclu = Convert.ToDouble(HttpContext.Session.GetString("TotaalInclu"));
             ViewBag.TotaalInclu = TotaalInclu;
-            
+
+            vMbestelling.Verzend(TotaalInclu);
+
 
             return View(vMbestelling);
         }

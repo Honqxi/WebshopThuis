@@ -15,8 +15,8 @@
             <h2 class="OpmaakTitels Centreer "> ONLINE VIDEOKAARTEN - Winkelmandje</h2>
             <p class="OpmaakLijn"></p>
             <table class="table">
-                
-                <tr class="OpmaakLijnWegdoen" >
+
+                <tr class="OpmaakLijnWegdoen">
                     <td class="KleurTekst OpmaakLijn">Klantnumer: </td>
                     <td>@Model.Klant.KlantNr</td>
                 </tr>
@@ -30,7 +30,7 @@
                 </tr>
                 <tr class="OpmaakLijnWegdoen">
                     <td></td>
-                    <td>@Model.Klant.Gemeente</td>
+                    <td>@Model.Klant.Gemeente @Model.Klant.PostCode </td>
                 </tr>
                 <tr class="OpmaakLijnWegdoen">
                     <td class="KleurTekst">Besteldatum:</td>
@@ -54,7 +54,7 @@
                 {
                     @foreach (var item in Model.WinkelmandRepo.WinkelmandItems)
                     {
-                        <tr>
+                        <tr class="OpmaakLijn">
                             <td><a asp-action="DeleteItem" asp-route-ArtNr="@item.ArtNr" asp-route-Aantal="@item.Aantal" asp-controller="Home"> <img class="OpmaakFotoVuilbak" src="@Url.Content("~/images/Prullenbak.png")" /> </a></td>
                             <td><img class="OpmaakFotoWinkelmand" src="@Url.Content("~/images/" + item.Foto)"></td>
                             <td>@item.ArtNr</td>
@@ -63,43 +63,68 @@
                             <td>@string.Format("{0:c}", item.Prijs) </td>
                             <td>@string.Format("{0:c}", (item.Aantal * item.Prijs)) </td>
                         </tr>
-                    }
-                }
 
-            </table>
-            @if (ViewBag.Leeg == true)
-            {
-                <p class="OpmaakLijn"></p>
-                <table class="table">
-                    
-                    
-                    <tr class="RechtsBerekenen" >
+                    }
+
+
+
+
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td class="KleurTekst"> Totaal exclu</td>
                         <td>@string.Format("{0:c}", (Model.BerekendGegeven.TotaalExclu))</td>
                     </tr>
-                    <tr class="RechtsBerekenen" >
+                    <tr class="OpmaakLijnWegdoen">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td class="KleurTekst"> BTW (21%)</td>
                         <td>@string.Format("{0:c}", (Model.BerekendGegeven.BTW))</td>
                     </tr>
-                    <tr class="RechtsBerekenen" >
+                    <tr class="OpmaakLijnWegdoen">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td class="KleurTekst">Totaal inclu </td>
                         <td>@string.Format("{0:c}", (Model.BerekendGegeven.TotaalInclu))</td>
                     </tr>
 
 
 
-                </table>
+                }
+            </table>
 
-                <p class=" Centreer"><input type="submit" value="Inhoud van het winkelmandje bestellen" /></p>
+            @if (ViewBag.Leeg == false)
+            {
+                <p class="Centreer KleurTekst"> Je winkelmand is leeg.</p>
+
+
             }
             else
             {
-                <p class="Centreer KleurTekst">Je winkelmand is leeg.</p>
+                <p class=" Centreer"><input type="submit" value="Inhoud van het winkelmandje bestellen" /></p>
             }
 
 
 
             <p class=" Centreer"><a asp-action="Index">Terug naar de catalogus</a></p>
+
+
+
+
+
+
+
+
+
         </form>
     </div>   
 </body>
