@@ -2,7 +2,8 @@
 {
     width: 150px;
 }
-.OpmaakFotoToevoegen {
+.OpmaakFotoToevoegen 
+{
     height: 400px;
     
 }
@@ -10,7 +11,8 @@
 {
     width: 100px;
 }
-.OpmaakFotoVuilbak {
+.OpmaakFotoVuilbak 
+{
     width: 25px;
 }
 .FoutMelding 
@@ -30,7 +32,6 @@
 {
     text-align: center;
 }
-
 body
 {
    background-image: url("../images/WebShopAchtergrond.jpg");
@@ -39,7 +40,6 @@ body
    background-attachment:fixed;
    background-repeat:no-repeat;
 }
-
 .div {
     margin-left: 100px;
     margin-right: 100px;
@@ -49,19 +49,19 @@ body
     box-shadow: 5px 5px 5px 5px rgb(134, 134, 134);
     background-color:white;
 }
-
 .OpmaakLijn 
 {
     border-bottom: 2px solid #2187cb;
 }
-
-.OpmaakTitels {
+.OpmaakTitels 
+{
     color: #2187cb;
     margin-top: 15px;
     margin-bottom: 25px;
 }
 
-.LinksToevoegen {
+.LinksToevoegen 
+{
     text-align: left;
     border-style: hidden;
     
@@ -71,12 +71,13 @@ table
 {
     border-collapse: collapse;
 }
-.OpmaakLijnWegdoen {
+.OpmaakLijnWegdoen 
+{
     
     border-style: hidden;
 }
-
-.KleurTekst {
+.KleurTekst 
+{
     color: #2187cb;
     font-weight:bold;
 }

@@ -12,10 +12,11 @@
 <body class="m-3">
     <div class="div p-3 ">
         <form asp-action="Winkelmandje" asp-controller="Home">
+
             <h2 class="OpmaakTitels Centreer "> ONLINE VIDEOKAARTEN - Winkelmandje</h2>
             <p class="OpmaakLijn"></p>
-            <table class="table">
 
+            <table class="table">
                 <tr class="OpmaakLijnWegdoen">
                     <td class="KleurTekst OpmaakLijn">Klantnumer: </td>
                     <td>@Model.Klant.KlantNr</td>
@@ -39,8 +40,6 @@
             </table>
 
             <table class="table Centreer ">
-
-
                 <tr class="OpmaakBalk">
                     <td></td>
                     <td>Foto</td>
@@ -52,6 +51,7 @@
                 </tr>
                 @if (ViewBag.Leeg == true)
                 {
+                    // Per record in de databank word er een lijntje ( artikel ) getoond. 
                     @foreach (var item in Model.WinkelmandRepo.WinkelmandItems)
                     {
                         <tr class="OpmaakLijn">
@@ -65,10 +65,6 @@
                         </tr>
 
                     }
-
-
-
-
                     <tr>
                         <td></td>
                         <td></td>
@@ -96,12 +92,12 @@
                         <td class="KleurTekst">Totaal inclu </td>
                         <td>@string.Format("{0:c}", (Model.BerekendGegeven.TotaalInclu))</td>
                     </tr>
-
-
-
                 }
             </table>
 
+
+            @* Om te tonen dat het winkelmandje leeg is gebruiken we een viewbag. Als deze leeg is toont hij het volgende. 
+                Anders kan je op een knop drukken om je artikelen te bestellen. *@
             @if (ViewBag.Leeg == false)
             {
                 <p class="Centreer KleurTekst"> Je winkelmand is leeg.</p>
@@ -112,18 +108,7 @@
             {
                 <p class=" Centreer"><input type="submit" value="Inhoud van het winkelmandje bestellen" /></p>
             }
-
-
-
             <p class=" Centreer"><a asp-action="Index">Terug naar de catalogus</a></p>
-
-
-
-
-
-
-
-
 
         </form>
     </div>   

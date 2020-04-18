@@ -13,7 +13,7 @@ namespace WebshopGraphicsCard.Persistence
         //We verbinden onze databank met ons project.
         string ConnStr = "server=localhost;user id=root;Password=Test123;database=dbwebshop";
 
-        //Hier halen we alle artikels op uit onze databank.
+        //Hier halen we alle artikels op uit onze databank. 
         public List<Artikel> loadArtikels()
         {
             MySqlConnection conn = new MySqlConnection(ConnStr);
@@ -37,6 +37,7 @@ namespace WebshopGraphicsCard.Persistence
             return lijst;
         }
 
+        // Hier laden we een specifiek artikel op. Hiervoor gebruiken we het artikel nummer.
         public Artikel loadArtikel(int Nr)
         {
             MySqlConnection conn = new MySqlConnection(ConnStr);
@@ -61,18 +62,19 @@ namespace WebshopGraphicsCard.Persistence
         }
 
 
+
         public void PasMandjeAan(Winkelmand winkelmand)
         {
             MySqlConnection conn1 = new MySqlConnection(ConnStr);
             conn1.Open();
 
-            //Hier controleer je of het artikel al in het winkel mandje zit
+            //Hier controleer je of het artikel al in het winkel mandje zit.
             string qry1 = "Select * from tblwinkelmand where (Artnr = '" + winkelmand.ArtNr + "') and (KlantNr = " + winkelmand.KlantNr + ")";
             MySqlCommand cmd1 = new MySqlCommand(qry1, conn1);
             MySqlDataReader dtr1 = cmd1.ExecuteReader();
 
 
-            //zoja, dan update je het aantal
+            //zoja, dan update je het aantal dat in je winkelmandje moet zitten.
             if (dtr1.HasRows)
             {
                 conn1.Close();
@@ -85,7 +87,8 @@ namespace WebshopGraphicsCard.Persistence
                 conn2.Close();
 
             }
-            else // Zonee, dan insert je het artikel en het aantal
+            // Zonee, dan insert je het artikel en het aantal in het winkelmandje. 
+            else
             {
                 MySqlConnection conn3 = new MySqlConnection(ConnStr);
                 conn3.Open();
@@ -96,7 +99,7 @@ namespace WebshopGraphicsCard.Persistence
                 conn3.Close();
             }
 
-            //Huidige voorraad aanpassen (Aantal dat naar het winkelmandje gaat aftrekken van de huidige voorraad)
+            // Hier gaan we de huidige voorraad aanpassen (Aantal dat naar het winkelmandje gaat aftrekken van de huidige voorraad)
             MySqlConnection conn4 = new MySqlConnection(ConnStr);
             conn4.Open();
             string qry4 = "update tblartikel set voorraad = voorraad - '" + winkelmand.Aantal + "' where (Artnr = '" + winkelmand.ArtNr + "')";
@@ -138,8 +141,6 @@ namespace WebshopGraphicsCard.Persistence
         {
             MySqlConnection conn = new MySqlConnection(ConnStr);
             conn.Open();
-            //string qry = "select (prijs*aantal) as totaalexcl, tblwinkelmand.KlantNr, tblwinkelmand.ArtNr, tblwinkelmand.Aantal, tblartikel.Foto, tblartikel.Naam, tblartikel.Prijs from tblwinkelmand inner join tblartikel on tblwinkelmand.ArtNr = tblartikel.ArtNr where KlantNr = '1'";
-
             string qry = "select (prijs*aantal) as totaalexcl, tblwinkelmand.KlantNr, tblwinkelmand.ArtNr, tblwinkelmand.Aantal, tblartikel.Foto, tblartikel.Naam, tblartikel.Prijs from tblwinkelmand inner join tblartikel on tblwinkelmand.ArtNr = tblartikel.ArtNr where KlantNr = '" + KlantNr + "'";
             MySqlCommand cmd = new MySqlCommand(qry, conn);
             MySqlDataReader dtr = cmd.ExecuteReader();
@@ -160,8 +161,7 @@ namespace WebshopGraphicsCard.Persistence
             return lijst;
         }
 
-
-
+        // Hier gaan we alle totalen bereken. 
         public BerekendGegeven BerekenTotaal()
         {
             MySqlConnection conn = new MySqlConnection(ConnStr);
@@ -203,8 +203,7 @@ namespace WebshopGraphicsCard.Persistence
         }
 
 
-        //Het Controleren van het winkelmandje. Heeft deze items voor de klant of niet
-
+        //Het Controleren van het winkelmandje. Heeft deze items voor de klant of niet. Dit hebben we nodig voor de knop bestelling plaatsten.
         public bool ControleerWinkelmand(int klantnr)
         {
             MySqlConnection conn = new MySqlConnection(ConnStr);
@@ -249,7 +248,7 @@ namespace WebshopGraphicsCard.Persistence
             }
             conn2.Close();
 
-            //Alles uit het winkelmandje halen.
+            //Alles uit het winkelmandje halen. 
             MySqlConnection conn3 = new MySqlConnection(ConnStr);
             conn3.Open();
             string qry3 = "select tblwinkelmand.ArtNr, Prijs, tblwinkelmand.Aantal from tblwinkelmand inner join tblArtikel on tblArtikel.artnr = tblwinkelmand.artnr where tblwinkelmand.KlantNr = '" + KlantNr + "'";
@@ -268,8 +267,7 @@ namespace WebshopGraphicsCard.Persistence
             }
             conn3.Close();
 
-            //Bestellijn creeëren, alle opgehaalde items terug in de bestellijn steken.
-
+            //Bestellijn creeëren, alle opgehaalde items in de bestellijn steken.
             foreach (var item in lijst)
             {
                 MySqlConnection conn4 = new MySqlConnection(ConnStr);
@@ -282,8 +280,7 @@ namespace WebshopGraphicsCard.Persistence
             }
 
 
-            //Winkelmandje legen
-
+            //Winkelmandje legen.
             MySqlConnection conn5 = new MySqlConnection(ConnStr);
             conn5.Open();
             string qry5 = "delete from tblWinkelmand where klantNr = " + KlantNr;
@@ -294,7 +291,7 @@ namespace WebshopGraphicsCard.Persistence
             return bestelling;
         }
 
-
+        // Het controleren van de loging van de gebruiker. 
         public int CheckCredentials(Klant klant)
         {
             MySqlConnection conn = new MySqlConnection(ConnStr);

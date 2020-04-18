@@ -27,15 +27,14 @@ namespace WebshopGraphicsCard.Controllers
             return View(ArtRepo);
         }
 
-        // Om rechtsreeks naar het winkelmandje te gaan.
-        [Authorize]
-        
+        // Om rechtsreeks naar het winkelmandje te gaan via een knop.
+        [Authorize]     
         public IActionResult Index(VMWinkelmand vMWinkelmand)
         {
             return RedirectToAction("Winkelmandje");
         }
 
-        //Een artikel laden om deze "misschien" toe te voegen aan het winkelmandje
+        //Een artikel laden om deze te bekijken en toe tevoegen aan het winkelmandje.
         [Authorize]
         [HttpGet]
         public IActionResult Toevoegen(int ArtNr)
@@ -47,7 +46,7 @@ namespace WebshopGraphicsCard.Controllers
         }
 
 
-        //Het geselecteerde winkelmandje ophalen.
+        //Het aantal van het bepaalde artikel, toe tevoegen aan het winkelmandje.
         [Authorize]
         [HttpPost]
         public IActionResult Toevoegen(VMToevoegen vMToevoegen)
@@ -78,6 +77,8 @@ namespace WebshopGraphicsCard.Controllers
             }           
         }
 
+
+        // Het winkelmandje inladen met zijn artikkels.
         [Authorize]
         [HttpGet]
         public IActionResult Winkelmandje(VMWinkelmand vMWinkelmand)
@@ -103,6 +104,7 @@ namespace WebshopGraphicsCard.Controllers
             
         }
 
+        // Een artikel uit het winkelmandje verwijderen.
         [Authorize]
         [HttpGet]
         public IActionResult DeleteItem(int ArtNr, int Aantal)
@@ -115,6 +117,7 @@ namespace WebshopGraphicsCard.Controllers
             return RedirectToAction("Winkelmandje");
         }
 
+        // Om naar de bevestiging te gaan.
         [Authorize]
         [HttpPost]
         public IActionResult Winkelmandje(VMbestelling vMbestelling)
@@ -123,6 +126,7 @@ namespace WebshopGraphicsCard.Controllers
             return RedirectToAction("Bevestiging");
         }
 
+        // Hier versturen we de bestelling en de mail.
         [Authorize]
         [HttpGet]
         public IActionResult Bevestiging(VMbestelling vMbestelling)
@@ -133,7 +137,6 @@ namespace WebshopGraphicsCard.Controllers
             vMbestelling.Bestelling = PC.MaakBestelling(klantnr);
             double TotaalInclu = Convert.ToDouble(HttpContext.Session.GetString("TotaalInclu"));
             ViewBag.TotaalInclu = TotaalInclu;
-
             vMbestelling.Verzend(TotaalInclu);
 
 
